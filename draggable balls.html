@@ -1,0 +1,103 @@
+
+<!doctype html>
+
+<html>
+    <head>
+      <title>draggable balls</title>
+      <meta charset="UTF-8">
+      <style>
+        body {
+          height: 500px;
+          border: 1px solid black;
+        }
+      </style>
+    </head>
+<body ondrop="containerDrop(event)" ondragover="containerDragOver(event)">
+
+    <div style='border: solid red 1px; width: 300px; height: 150px'
+     ondragenter="divDragEnter(event)" ondragleave="divDragLeave(event)">
+    </div>
+
+    <br />
+
+    <div style='border: solid blue 1px; width: 300px; height: 150px'
+        ondragenter="divDragEnter(event)" ondragleave="divDragLeave(event)">
+    </div>
+
+    <br /><br />
+
+    <img id='BALL1' width=50 src="http://fe.it-academy.by/Examples/ball3.png"
+        ondragstart="ballDragStart(event)"
+        ondragend="ballDragEnd(event)"
+        ondrag="ballDrag(event)" >
+    <img id='BALL2' width=70 src="http://fe.it-academy.by/Examples/ball3.png"
+        ondragstart="ballDragStart(event)"
+        ondragend="ballDragEnd(event)"
+        ondrag="ballDrag(event)">
+    <img id='BALL3' width=100 src="http://fe.it-academy.by/Examples/ball3.png"
+        ondragstart="ballDragStart(event)"
+        ondragend="ballDragEnd(event)"
+        ondrag="ballDrag(event)">
+
+    <script>
+
+    "use strict";
+
+    var draggedBall=null;
+
+    function ballDragStart(e) {
+        draggedBall = e.target;
+    }
+    function ballDrag(e) {
+        draggedBall.style.opacity = '0';
+    }
+
+    function ballDragEnd(e) {
+        draggedBall.style.opacity = '1';
+        draggedBall=null;
+    }
+
+    function containerDragOver(e) {
+        // действие по-умолчанию drag & drop отключем для контейнеров
+        // если не вызывать e.preventDefault, то событие drop не наступает вообще
+      if(e.target.tagName !== 'IMG') {
+        e.preventDefault();
+      }
+    }
+
+    function containerDrop(e) {
+      e.target.style.backgroundColor = 'transparent';
+      // отмена стандартного действия при перемещении элемента в окно браузера
+      e.preventDefault();
+      let childrenArr = [...e.target.children];
+      if (draggedBall) {
+      // appendChild отцепляет элемент DOM от его исходного родителя в DOM
+      // если такой есть автоматически
+      // если уже этот элемен есть среди дочерних - не вставляем в конец дочерних
+        if(childrenArr.indexOf(draggedBall) === -1) {
+          e.target.appendChild(draggedBall);
+        }
+      }
+    }
+
+    function divDragEnter(e) {
+      if(e.target.tagName !== 'IMG') {
+        e.target.style.backgroundColor = 'green';
+      } else {
+        e.target.style.backgroundColor = 'red';
+      }
+    }
+
+    function  divDragLeave(e) {
+      e.target.style.backgroundColor = 'transparent';
+    }
+
+    </script>
+
+</body>
+
+</html>
+
+
+
+
